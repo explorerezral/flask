@@ -4,9 +4,16 @@ import os
 app = Flask(__name__)
 
 
-@app.route('/')
+@app.route('/f', methods=['GET', 'POST'])
 def index():
-    return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+    
+    if request.method == 'GET':
+        return 'This is a GET request to /'
+    elif request.method == 'POST':
+        return 'This is a POST request to /’  
+    #return jsonify({"Choo Choo": "Welcome to your Flask app 🚅"})
+
+
 
 
 if __name__ == '__main__':
