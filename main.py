@@ -8,7 +8,7 @@ app = Flask(__name__)
 #def home():
     #return 'Hello, World!'
 
-@app.route('/json', methods=['GET', 'POST'])
+@app.route('/json', methods=['POST'])
 def form():
 #     if request.method == 'GET':
 #         return 'This is a GET request to /json'
