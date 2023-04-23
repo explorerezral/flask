@@ -10,9 +10,9 @@ app = Flask(__name__)
 
 @app.route('/json', methods=['GET', 'POST'])
 def form():
-    if request.method == 'GET':
-        return 'This is a GET request to /json'
-    elif request.method == 'POST':
+#     if request.method == 'GET':
+#         return 'This is a GET request to /json'
+    if request.method == 'POST':
         data = json.loads(request.data) # 将json字符串转为dict
         name = data['name']
         age = data['age']
