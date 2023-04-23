@@ -4,9 +4,9 @@ import json
 
 app = Flask(__name__)
 
-@app.route('/', methods=['GET'])
-def home():
-    return 'Hello, World!'
+#@app.route('/', methods=['GET'])
+#def home():
+    #return 'Hello, World!'
 
 @app.route('/json', methods=['GET', 'POST'])
 def form():
