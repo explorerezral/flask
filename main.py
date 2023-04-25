@@ -10,7 +10,7 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
 
 
-#假设每颗药丸比正常药丸中x克，分别从一号瓶，二号瓶，三号瓶，四号瓶中拿出一颗两颗三颗四颗药丸放到天平左边，再从一号瓶中拿出十颗药丸放到天平右边，如果右侧重则是一号瓶药品变质，如果左侧比右侧中2x克是2号瓶变质，3x克是3号瓶变质，4x克是4号瓶变质
+
 
 
 
@@ -58,6 +58,7 @@ def audio_process():
 
         response = chat.whisper_transcribe(key,file)
         #return "11"
+        print(response)
         return response
     
 class chat ():
