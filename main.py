@@ -23,6 +23,18 @@ def form():
         
         return response
     
+@app.route('/audio' ,methods=['POST'])
+def audio_process():
+
+    if request.method == 'POST':
+        file = request.files.get('file')
+        key = request.form.get('Authorization')
+        # data = request.form.to_dict() 
+        # key = data['key']
+        # del data['key']
+        # response = chat.create_chatgpt_request(key,data)
+        return "文件上传成功"+key
+    
 class chat ():
     def create_chatgpt_request(OPENAI_API_KEY,data):
         url = "https://api.openai.com/v1/chat/completions"
