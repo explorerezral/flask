@@ -21,7 +21,6 @@ def form():
         del data['key']
         
         response = chat.create_chatgpt_request(key,data)
-        
         return response
     
 @app.route('/audio' ,methods=['GET','POST'])
@@ -52,13 +51,13 @@ def audio_process():
         for name in request.files:
             file = request.files.get(name)
             print(f"{name}: {file.filename} ({file.content_type})")
-        file = request.files.get('file')
-        key = request.form.get('key')
+#         file = request.files.get('file')
+#         key = request.form.get('key')
         # data = request.form.to_dict() 
         # key = data['key']
         # del data['key']
         # response = chat.create_chatgpt_request(key,data)
-        return "文件上传成功"+key
+        return "文件上传成功"
     
     
 class chat ():
