@@ -31,8 +31,8 @@ def audio_process():
         print(f"Request Method: {request.method}")
         print(f"Request URL: {request.url}")
         
-        print("Request Data:" + request.data)
-
+        print("Request Data:") 
+        print(request.data)
         # 打印请求头信息
         print("Request Headers:")
         for header in request.headers:
