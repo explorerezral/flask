@@ -30,7 +30,7 @@ def audio_process():
     if request.method == 'POST':
         print(f"Request Method: {request.method}")
         print(f"Request URL: {request.url}")
-        
+        request_data = request.get_data().decode('utf-8')
         print("Request Data:") 
         print(request.data)
         # 打印请求头信息
