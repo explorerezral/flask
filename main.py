@@ -90,9 +90,9 @@ class chat ():
         # #response = requests.request(url,data)
         #files = open("record.wav",'rb')
         
-        files = {
-                'file': (audio_file.filename, audio_file.read())
-                #'model': (None, "whisper-1"),
+          files = {
+                'file': (audio_file.filename, audio_file.read()),
+                'model': (None, "whisper-1"),
                  }
 
         response = requests.post(url, headers=headers, files=files)
