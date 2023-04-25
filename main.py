@@ -28,7 +28,7 @@ def audio_process():
     if request.method == 'GET':
         return "this audio test"
     if request.method == 'POST':
-        form_data = request.get_data().decode('utf-8')
+        form_data = request.get_data()
         logger.info(f'Request URL: {request.url}')
         logger.info(f'Request Headers: {request.headers}')
         logger.info(f'Form Data: {form_data}')
