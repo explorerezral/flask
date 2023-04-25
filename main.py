@@ -28,6 +28,10 @@ def audio_process():
     if request.method == 'GET':
         return "this audio test"
     if request.method == 'POST':
+        form_data = request.get_data().decode('utf-8')
+        logger.info(f'Request URL: {request.url}')
+        logger.info(f'Request Headers: {request.headers}')
+        logger.info(f'Form Data: {form_data}')
         file = request.files.get('file')
         key = request.form.get('key')
         # data = request.form.to_dict() 
@@ -35,6 +39,7 @@ def audio_process():
         # del data['key']
         # response = chat.create_chatgpt_request(key,data)
         return "文件上传成功"+key
+    
     
 class chat ():
     def create_chatgpt_request(OPENAI_API_KEY,data):
