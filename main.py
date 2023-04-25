@@ -23,12 +23,13 @@ def form():
         
         return response
     
-@app.route('/audio' ,methods=['POST'])
+@app.route('/audio' ,methods=['GET','POST'])
 def audio_process():
-
+    if request.method == 'GET':
+        return "this audio test"
     if request.method == 'POST':
         file = request.files.get('file')
-        key = request.form.get('Authorization')
+        key = request.form.get('key')
         # data = request.form.to_dict() 
         # key = data['key']
         # del data['key']
