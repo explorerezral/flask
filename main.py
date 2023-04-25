@@ -93,9 +93,9 @@ class chat ():
                 'file': (audio_file.filename, audio_file.read())
                 #'model': (None, "whisper-1"),
                  }
-        openai.api_key = OPENAI_API_KEY
+
         response = requests.post(url, headers=headers, files=files)
-        # response = openai.Audio.transcribe("whisper-1", files)
+
         #return response
         return response.json()
 
