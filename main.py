@@ -29,10 +29,29 @@ def audio_process():
     if request.method == 'GET':
         return "this audio test"
     if request.method == 'POST':
-        form_data = request.get_data()
-        logger.info(f'Request URL: {request.url}')
-        logger.info(f'Request Headers: {request.headers}')
-        logger.info(f'Form Data: {form_data}')
+        print(f"Request Method: {request.method}")
+        print(f"Request URL: {request.url}")
+        
+        # 打印请求头信息
+        print("Request Headers:")
+        for header in request.headers:
+            print(f"{header[0]}: {header[1]}")
+        
+        # 打印请求参数
+        print("Request Args:")
+        for arg in request.args:
+            print(f"{arg}: {request.args.get(arg)}")
+        
+        # 打印表单数据
+        print("Request Form:")
+        for field in request.form:
+            print(f"{field}: {request.form.get(field)}")
+        
+        # 打印上传的文件
+        print("Request Files:")
+        for name in request.files:
+            file = request.files.get(name)
+            print(f"{name}: {file.filename} ({file.content_type})")
         file = request.files.get('file')
         key = request.form.get('key')
         # data = request.form.to_dict() 
