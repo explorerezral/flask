@@ -57,8 +57,8 @@ def audio_process():
         print(file)
 
         response = chat.whisper_transcribe(key,file)
-        #return "11"
         print(response)
+        #return "11"
         return response
     
 class chat ():
@@ -90,13 +90,13 @@ class chat ():
         # #response = requests.request(url,data)
         #files = open("record.wav",'rb')
         
-          files = {
+        files = {
                 'file': (audio_file.filename, audio_file.read()),
                 'model': (None, "whisper-1"),
                  }
-
+  
         response = requests.post(url, headers=headers, files=files)
-
+        # response = openai.Audio.transcribe("whisper-1", files)
         #return response
         return response.json()
 
