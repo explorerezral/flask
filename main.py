@@ -3,7 +3,7 @@ import os
 import json
 import requests
 import logging
-import openai
+
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
@@ -90,8 +90,8 @@ class chat ():
         #files = open("record.wav",'rb')
         
         files = {
-                'file': (audio_file.filename, audio_file.read()),
-                'model': (None, "whisper-1"),
+                'file': (audio_file.filename, audio_file.read())
+                #'model': (None, "whisper-1"),
                  }
         openai.api_key = OPENAI_API_KEY
         response = requests.post(url, headers=headers, files=files)
