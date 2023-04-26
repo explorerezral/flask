@@ -3,7 +3,7 @@ import os
 import json
 import requests
 import logging
-
+import railway
 
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
@@ -27,7 +27,9 @@ def text_process():
         data = json.loads(request.data)
         key = data['key']
         del data['key']
-        response = chat.create_chatgpt_request(key,data)
+        model = data['model']
+        content = data['messages'][0]['content']
+        response = chat.create_chatgpt_request(key,model,content)
         return response
     
 
@@ -36,14 +38,13 @@ def text_process():
 def audio_process():
     bot = chat()
     if request.method == 'GET':
+
         return "this audio test"
     if request.method == 'POST':
+        model = "gpt-3.5-turbo"
 
-        request_data = request.get_data().decode('utf-8', errors='ignore')
 
-        print("Request Headers:")
-        # for header in request.headers:
-        #     print(f"{header[0]}: {header[1]}")
+
         for header in request.headers:
             if(header[0] == "Authorization"):  
                 key = header[1].replace('Bearer ','')
@@ -54,23 +55,34 @@ def audio_process():
             file = request.files.get(file_name) 
             
         #file = request.files.get('1.wav')
-        print(file)
+        logger.info(file)
 
-        response = chat.whisper_transcribe(key,file)
-        print(response)
+        response_stt = chat.whisper_transcribe(key,file)
+        logger.info(response_stt)
+
+        response_gpt = chat.create_chatgpt_request(key,model,response_stt)
+        #logger.info(response_gpt)
+
+        
+        response_gpt['whisper'] = response_stt
+        logger.info(response_gpt)
+
         #return "11"
-        return response
+        return response_gpt
     
 class chat ():
-    def create_chatgpt_request(OPENAI_API_KEY,data):
+    def create_chatgpt_request(OPENAI_API_KEY, model, content):
         url = "https://api.openai.com/v1/chat/completions"
-        model = "gpt-3.5-turbo"
         headers = {
             "Content-Type": "application/json",
             "Authorization": "Bearer " + OPENAI_API_KEY
         }
-        # character = "Humor"
-        #messages=[{"role":"system", "content": "You are a helpful assistant and answer every question by one sentence."},
+
+        messages=[{"role":"user", "content": content}]
+        data = {
+        "model":model,
+        "messages": messages,
+        }
         print(data)
         response_json = requests.post(url, headers=headers, json=data).json()
         return response_json
@@ -82,23 +94,14 @@ class chat ():
             "Authorization": "Bearer " + OPENAI_API_KEY,
         }
 
-        # files = {
-        #     'file': audio_file,
-        #     'model': (None, "whisper-1"),
-        # }
-        # response = requests.post(url, headers=headers, files=files)
-        # #response = requests.request(url,data)
-        #files = open("record.wav",'rb')
-        
+
         files = {
                 'file': (audio_file.filename, audio_file.read()),
                 'model': (None, "whisper-1"),
                  }
   
         response = requests.post(url, headers=headers, files=files)
-        # response = openai.Audio.transcribe("whisper-1", files)
-        #return response
-        return response.json()
+        return response.json()['text']
 
     def whisper_translate(OPENAI_API_KEY,audio_file):
         url="https://api.openai.com/v1/chat/translations"
