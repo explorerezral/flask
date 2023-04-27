@@ -38,7 +38,7 @@ def audio_translate():
     if request.method == 'GET':
         return 'This is a GET request to Trasnlate'
     if request.method == 'POST': 
-
+        model = "gpt-3.5-turbo"
         for header in request.headers:
             if(header[0] == "Authorization"):  
                 key = header[1].replace('Bearer ','')
@@ -59,8 +59,22 @@ def audio_translate():
         
         else:
             logger.info(response_trans_json)
-        
-        return response_trans_json
+
+            logger.info("wating for GPT response......")
+            response_gpt = chat.create_chatgpt_request(key,model,response_trans_json['text'])
+            response_gpt_json = response_gpt.json()
+
+            if(response_gpt.status_code != 200):
+
+                response_gpt_json['model'] = model
+                logger.warn(response_gpt_json)
+
+            else:
+
+                response_gpt_json['whisper'] = response_trans_json['text']
+                logger.info(response_gpt_json)
+
+            return response_gpt_json
 
     
 
@@ -79,12 +93,9 @@ def audio_process():
             if(header[0] == "Authorization"):  
                 key = header[1].replace('Bearer ','')
 
-       # key = request.form.get('key')
-        # data = request.form.to_dict()
         for file_name in request.files:
             file = request.files.get(file_name) 
             
-        #file = request.files.get('1.wav')
         logger.info(file)
 
         response_stt = chat.whisper_transcribe(key,file)
@@ -110,7 +121,7 @@ def audio_process():
             else:
 
                 response_gpt_json['whisper'] = response_stt_json['text']
-                logger.info(response_gpt)
+                logger.info(response_gpt_json)
 
             return response_gpt_json
     
