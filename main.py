@@ -67,7 +67,7 @@ def audio_process():
         
         else:
             logger.info(response_stt_json)
-            response_gpt = chat.create_chatgpt_request(key,model,response_stt)
+            response_gpt = chat.create_chatgpt_request(key,model,response_stt_json['text'])
             response_gpt_json = response_gpt.json()
 
             if(response_gpt.status_code != 200):
