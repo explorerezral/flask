@@ -122,7 +122,7 @@ def audio_process():
 
             else:
                 
-                response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
+                #response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
                 response_gpt_json['whisper'] = response_stt_json['text']
                 logger.info(response_gpt_json)
 
