@@ -109,6 +109,8 @@ def audio_process():
         else:
             logger.info(response_stt_json)
             logger.info("wating for GPT response......")
+            
+            
             content = "In one sentence: " + response_stt_json['text'] 
             response_gpt = chat.create_chatgpt_request(key,model,content)
             response_gpt_json = response_gpt.json()
@@ -119,7 +121,8 @@ def audio_process():
                 logger.warn(response_gpt_json)
 
             else:
-
+                
+                response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
                 response_gpt_json['whisper'] = response_stt_json['text']
                 logger.info(response_gpt_json)
 
