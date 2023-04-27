@@ -109,7 +109,7 @@ def audio_process():
         else:
             logger.info(response_stt_json)
             logger.info("wating for GPT response......")
-            content = "Please answer in just one sentence about " + response_stt_json['text'] 
+            content = "In one sentence: " + response_stt_json['text'] 
             response_gpt = chat.create_chatgpt_request(key,model,content)
             response_gpt_json = response_gpt.json()
 
