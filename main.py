@@ -4,6 +4,7 @@ import json
 import requests
 import logging
 
+
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
@@ -31,7 +32,37 @@ def text_process():
         response = chat.create_chatgpt_request(key,model,content)
         return response
     
+@app.route('/translate', methods=['GET','POST'])
+def audio_translate():
+    bot = chat()
+    if request.method == 'GET':
+        return 'This is a GET request to Trasnlate'
+    if request.method == 'POST': 
 
+        for header in request.headers:
+            if(header[0] == "Authorization"):  
+                key = header[1].replace('Bearer ','')
+
+        for file_name in request.files:
+            file = request.files.get(file_name) 
+            
+
+        logger.info(file)
+
+        response_trans = chat.whisper_translate(key,file)
+
+        response_trans_json = response_trans.json()
+        if(response_trans.status_code != 200):
+             
+             response_trans_json['model'] = "whisper-trasnlate"
+             logger.warn(response_trans_json)
+        
+        else:
+            logger.info(response_trans_json)
+        
+        return response_trans_json
+
+    
 
 @app.route('/audio' ,methods=['GET','POST'])
 def audio_process():
@@ -67,6 +98,7 @@ def audio_process():
         
         else:
             logger.info(response_stt_json)
+            logger.info("wating for GPT response......")
             response_gpt = chat.create_chatgpt_request(key,model,response_stt_json['text'])
             response_gpt_json = response_gpt.json()
 
@@ -118,21 +150,20 @@ class chat ():
         return response
 
     def whisper_translate(OPENAI_API_KEY,audio_file):
-        url="https://api.openai.com/v1/chat/translations"
+        url="https://api.openai.com/v1/audio/translations"
         headers = {
             # "Content-Type": "application/json",
             "Authorization": "Bearer " + OPENAI_API_KEY
         }
-
         files = {
-            'file': open(audio_file, "rb"),
-            'model': (None, "whisper-1"),
-        }
+                'file': (audio_file.filename, audio_file.read()),
+                'model': (None, "whisper-1"),
+                 }
       
         response = requests.post(url, headers=headers, files=files)
      
        
-        return response.json()['text']
+        return response
 
 
 if __name__ == '__main__':
