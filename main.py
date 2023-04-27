@@ -95,7 +95,7 @@ def audio_process():
 
         for file_name in request.files:
             file = request.files.get(file_name) 
-            
+
         logger.info(file)
 
         response_stt = chat.whisper_transcribe(key,file)
@@ -110,7 +110,8 @@ def audio_process():
         else:
             logger.info(response_stt_json)
             logger.info("wating for GPT response......")
-            response_gpt = chat.create_chatgpt_request(key,model,response_stt_json['text'])
+            content = "Please give me a brief answer about" + response_stt_json['text'] 
+            response_gpt = chat.create_chatgpt_request(key,model,content)
             response_gpt_json = response_gpt.json()
 
             if(response_gpt.status_code != 200):
