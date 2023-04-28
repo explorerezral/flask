@@ -132,9 +132,9 @@ def audio_process():
                 logger.info(response_gpt_json)
                 
             #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
-            # response = make_response(response_gpt_json)
-            # response.headers['Content-Type'] = 'text/plain;charset=UTF-8'
-            return response_gpt_json
+            response = make_response(response_gpt_json)
+            response.headers['Content-Type'] = 'text/plain;charset=UTF-8'
+            return response
     
 class chat ():
     def create_chatgpt_request(OPENAI_API_KEY, model, content):
@@ -144,7 +144,7 @@ class chat ():
             "Authorization": "Bearer " + OPENAI_API_KEY
         }
 
-        messages=[
+        messages=[{"role":"system", "content":"answer in just one sentence "},
                     {"role":"user", "content": content}]
         data = {
         "model":model,
