@@ -14,7 +14,6 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(mes
 
 
 
-
 @app.route('/', methods=['GET'])
 def home():
     return 'Hello, World!'
