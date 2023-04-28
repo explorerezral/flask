@@ -129,8 +129,9 @@ def audio_process():
                 utf8_str = (json.dumps(response_gpt_json, ensure_ascii=False).encode('utf-8')).decode('utf-8')
                 response_gpt_json = json.loads(utf8_str)
                 logger.info(response_gpt_json)
-
-            return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
+                
+            #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
+            return response_gpt_json
     
 class chat ():
     def create_chatgpt_request(OPENAI_API_KEY, model, content):
