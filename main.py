@@ -132,8 +132,8 @@ def audio_process():
                 
             #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
             response = make_response(response_gpt_json)
-            response.headers['Content-Type'] = 'application/json;charset=UTF-8'
-            return response
+            response_gpt_json.headers['Content-Type'] = 'application/json;charset=UTF-8'
+            return response_gpt_json
             return "这个是中文的audio回应"
     
 class chat ():
