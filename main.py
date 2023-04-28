@@ -85,55 +85,56 @@ def audio_process():
 
         return "this audio test"
     if request.method == 'POST':
-        model = "gpt-3.5-turbo"
+        # model = "gpt-3.5-turbo"
 
 
 
-        for header in request.headers:
-            if(header[0] == "Authorization"):  
-                key = header[1].replace('Bearer ','')
+        # for header in request.headers:
+        #     if(header[0] == "Authorization"):  
+        #         key = header[1].replace('Bearer ','')
 
-        for file_name in request.files:
-            file = request.files.get(file_name) 
+        # for file_name in request.files:
+        #     file = request.files.get(file_name) 
 
-        logger.info(file)
+        # logger.info(file)
 
-        response_stt = chat.whisper_transcribe(key,file)
-        response_stt_json = response_stt.json()
-        if(response_stt.status_code != 200):
+        # response_stt = chat.whisper_transcribe(key,file)
+        # response_stt_json = response_stt.json()
+        # if(response_stt.status_code != 200):
              
-             response_stt_json['model'] = "whisper"
-             logger.warn(response_stt_json)
+        #      response_stt_json['model'] = "whisper"
+        #      logger.warn(response_stt_json)
              
-             return response_stt_json
+        #      return response_stt_json
         
-        else:
-            logger.info(response_stt_json)
-            logger.info("wating for GPT response......")
-            content = response_stt_json['text'] 
-            response_gpt = chat.create_chatgpt_request(key,model,content)
-            response_gpt_json = response_gpt.json()
+        # else:
+        #     logger.info(response_stt_json)
+        #     logger.info("wating for GPT response......")
+        #     content = response_stt_json['text'] 
+        #     response_gpt = chat.create_chatgpt_request(key,model,content)
+        #     response_gpt_json = response_gpt.json()
            
 
-            if(response_gpt.status_code != 200):
+        #     if(response_gpt.status_code != 200):
 
-                response_gpt_json['model'] = model
-                logger.warn(response_gpt_json)
+        #         response_gpt_json['model'] = model
+        #         logger.warn(response_gpt_json)
 
-            else:
+        #     else:
                 
-                #response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
+        #         #response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
 
-                response_gpt_json['whisper'] = response_stt_json['text']
-                # utf8_str = (json.dumps(response_gpt_json, ensure_ascii=False).encode('utf-8')).decode('utf-8')
+        #         response_gpt_json['whisper'] = response_stt_json['text']
+        #         # utf8_str = (json.dumps(response_gpt_json, ensure_ascii=False).encode('utf-8')).decode('utf-8')
                 
-                # response_gpt_json = json.loads(utf8_str)
-                logger.info(response_gpt_json)
+        #         # response_gpt_json = json.loads(utf8_str)
+        #         logger.info(response_gpt_json)
                 
-            #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
-            response = make_response(response_gpt_json)
-            response.headers['Content-Type'] = 'text/plain;charset=UTF-8'
-            return response
+        #     #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
+        #     # response = make_response(response_gpt_json)
+        #     # response.headers['Content-Type'] = 'text/plain;charset=UTF-8'
+        #     return response_gpt_json
+            return "这个是中文的audio回应"
     
 class chat ():
     def create_chatgpt_request(OPENAI_API_KEY, model, content):
