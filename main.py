@@ -1,3 +1,4 @@
+# coding=utf-8
 from flask import Flask,request
 import os
 import json
@@ -88,6 +89,7 @@ def audio_process():
         model = "gpt-3.5-turbo"
 
 
+
         for header in request.headers:
             if(header[0] == "Authorization"):  
                 key = header[1].replace('Bearer ','')
@@ -109,11 +111,10 @@ def audio_process():
         else:
             logger.info(response_stt_json)
             logger.info("wating for GPT response......")
-            
-            
-            content = "In one sentence: " + response_stt_json['text'] 
+            content = response_stt_json['text'] 
             response_gpt = chat.create_chatgpt_request(key,model,content)
             response_gpt_json = response_gpt.json()
+           
 
             if(response_gpt.status_code != 200):
 
@@ -122,8 +123,11 @@ def audio_process():
 
             else:
                 
-                response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
+                #response_gpt_json['choices'][0]['message']['content']=str(str(response_gpt_json['choices'][0]['message']['content']).encode("utf-8","strict"))
+
                 response_gpt_json['whisper'] = response_stt_json['text']
+                utf8_str = (json.dumps(response_gpt_json, ensure_ascii=False).encode('utf-8')).decode('utf-8')
+                response_gpt_json = json.loads(utf8_str)
                 logger.info(response_gpt_json)
 
             return response_gpt_json
@@ -136,7 +140,8 @@ class chat ():
             "Authorization": "Bearer " + OPENAI_API_KEY
         }
 
-        messages=[{"role":"user", "content": content}]
+        messages=[{"role":"system", "content":"answer in just one sentence "},
+                    {"role":"user", "content": content}]
         data = {
         "model":model,
         "messages": messages,
