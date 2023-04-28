@@ -9,7 +9,7 @@ import logging
 app = Flask(__name__)
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s: %(message)s')
-
+app.config['JSON_AS_ASCII'] = False
 
 
 
@@ -132,8 +132,8 @@ def audio_process():
                 
             #return Response(response_gpt_json,content_type='text/plain; charset=utf-8')
             response = make_response(response_gpt_json)
-            response_gpt_json.headers['Content-Type'] = 'application/json;charset=UTF-8'
-            return response_gpt_json
+            response.headers['Content-Type'] = 'application/json;charset=UTF-8'
+            return response
             return "这个是中文的audio回应"
     
 class chat ():
